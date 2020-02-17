@@ -42,7 +42,6 @@ window.onload = function() {
   makeBuffer();
   makeShaders();
   makeTextures();
-  setInitialState();
 };
 
 /**
@@ -76,54 +75,6 @@ document.addEventListener("mousedown", e => {
   console.log(console.log("x: " + e.clientX + " y: " + e.clientY));
   poke(e.clientX, dimensions.height - e.clientY, 255, 0, 0, textureBack);
 });
-
-function setInitialState() {
-  /*
-  for (let i = 0; i < dimensions.width; i++) {
-    for (let j = 0; j < dimensions.height; j++) {
-      const rand = Math.random();
-      if (rand < 0.25) {
-        poke(i, j, 255, 0, 0, textureBack);
-      } else if (rand < 0.5) {
-        poke(i, j, 0, 255, 0, textureBack);
-      } else if (rand < 0.75) {
-        poke(i, j, 0, 0, 255, textureBack);
-      }
-    }
-  }
-  */
-  for (let i = 0; i < dimensions.width; i++) {
-    /*
-    for (let j = 0; j < dimensions.height; j++) {
-      if (
-        i > dimensions.width * 0.25 &&
-        i < dimensions.height * 0.75 &&
-        j > dimensions.height * 0.25 &&
-        j < dimensions.height * 0.75
-      )
-        poke(i, j, 255, 0, 0, textureBack);
-    }
-    for (let j = 0; j < dimensions.height; j++) {
-      if (
-        i > dimensions.width * 0.2 &&
-        i < dimensions.height * 0.7 &&
-        j > dimensions.height * 0.2 &&
-        j < dimensions.height * 0.7
-      )
-        poke(i, j, 0, 255, 0, textureBack);
-    }
-    for (let j = 0; j < dimensions.height; j++) {
-      if (
-        i > dimensions.width * 0.15 &&
-        i < dimensions.height * 0.25 &&
-        j > dimensions.height * 0.15 &&
-        j < dimensions.height * 0.25
-      )
-        poke(i, j, 0, 0, 255, textureBack);
-    }
-    */
-  }
-}
 
 function makeBuffer() {
   // create a buffer object to store vertices
