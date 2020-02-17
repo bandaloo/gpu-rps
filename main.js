@@ -47,12 +47,10 @@ window.onload = function() {
 /**
  * @param {number} x
  * @param {number} y
- * @param {number} valueR
- * @param {number} valueG
- * @param {number} valueB
+ * @param {number[]} color
  * @param {WebGLTexture} texture
  */
-function poke(x, y, valueR, valueG, valueB, texture) {
+function poke(x, y, color, texture) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texSubImage2D
@@ -67,14 +65,28 @@ function poke(x, y, valueR, valueG, valueB, texture) {
     gl.RGBA,
     gl.UNSIGNED_BYTE,
     // is supposed to be a typed array
-    new Uint8Array([valueR, valueG, valueB, 255])
+    new Uint8Array([...color, 255])
   );
 }
 
+let drawColor = [255, 0, 0];
+
 document.addEventListener("mousedown", e => {
   console.log(console.log("x: " + e.clientX + " y: " + e.clientY));
-  poke(e.clientX, dimensions.height - e.clientY, 255, 0, 0, textureBack);
+  poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
 });
+
+document.addEventListener("keydown", e => {
+  if (e.key === "r") {
+    drawColor = [255, 0, 0];
+  } else if (e.key === "g") {
+    drawColor = [0, 255, 0];
+  } else if (e.key === "b") {
+    drawColor = [0, 0, 255];
+  }
+});
+
+document.addEventListener;
 
 function makeBuffer() {
   // create a buffer object to store vertices
