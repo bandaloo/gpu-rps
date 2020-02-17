@@ -15,7 +15,7 @@ float random(vec2 st) {
 
 // look up individual cell values
 vec3 get(int x, int y) {
-  return texture2D(state, (gl_FragCoord.xy + vec2(x, y)) / resolution).rgb;
+  return texture2D(state, (mod(gl_FragCoord.xy + vec2(x, y), resolution)) / resolution).rgb;
 }
 
 // change color
