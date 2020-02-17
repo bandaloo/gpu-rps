@@ -26,8 +26,10 @@ vec3 munch(vec3 center, int x, int y) {
     (neighbor.g > 0.0 && center.r > 0.0)
     ||(neighbor.b > 0.0 && center.g > 0.0)
     ||(neighbor.r > 0.0 && neighbor.b > 0.0)
-    ||(center == vec3(0.0))
   ) {
+    gl_FragColor = vec4(vec3(neighbor), 1.0);
+  }
+  else if (center == vec3(0.0)) {
     gl_FragColor = vec4(vec3(neighbor - sign(neighbor) * vec3(0.0125)), 1.0);
   } else {
     gl_FragColor = vec4(center, 1.0);
