@@ -48,10 +48,12 @@ window.onload = function() {
 /**
  * @param {number} x
  * @param {number} y
- * @param {number} value
+ * @param {number} valueR
+ * @param {number} valueG
+ * @param {number} valueB
  * @param {WebGLTexture} texture
  */
-function poke(x, y, value, texture) {
+function poke(x, y, valueR, valueG, valueB, texture) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texSubImage2D
@@ -66,16 +68,34 @@ function poke(x, y, value, texture) {
     gl.RGBA,
     gl.UNSIGNED_BYTE,
     // is supposed to be a typed array
-    new Uint8Array([value, value, value, 255])
+    new Uint8Array([valueR, valueG, valueB, 255])
   );
 }
 
 function setInitialState() {
+  /*
   for (let i = 0; i < dimensions.width; i++) {
     for (let j = 0; j < dimensions.height; j++) {
-      if (Math.random() > 0.75) {
-        poke(i, j, 255, textureBack);
+      const rand = Math.random();
+      if (rand < 0.25) {
+        poke(i, j, 255, 0, 0, textureBack);
+      } else if (rand < 0.5) {
+        poke(i, j, 0, 255, 0, textureBack);
+      } else if (rand < 0.75) {
+        poke(i, j, 0, 0, 255, textureBack);
       }
+    }
+  }
+  */
+  for (let i = 0; i < dimensions.width; i++) {
+    for (let j = 0; j < dimensions.height; j++) {
+      if (
+        i > dimensions.width * 0.25 &&
+        i < dimensions.height * 0.75 &&
+        j > dimensions.height * 0.25 &&
+        j < dimensions.height * 0.75
+      )
+        poke(i, j, 255, 0, 0, textureBack);
     }
   }
 }
