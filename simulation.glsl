@@ -38,8 +38,6 @@ vec3 munch(vec3 center, int x, int y) {
 }
 
 void main() {
-  // get sum of all surrounding nine neighbors
-  //int sum = get(-1, - 1) + get(-1, 0) + get(-1, 1) + get(0, - 1) + get(0, 1) + get(1, - 1) + get(1, 0) + get(1, 1);
   float r = random(gl_FragCoord.xy * 1.234 + time);
   float i = r * 8.0;
   vec3 center = get(0, 0); // cache this so it so lookup doesn't happen every munch
