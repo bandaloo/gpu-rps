@@ -28,6 +28,22 @@ let textureFront;
 let dimensions = { width: null, height: null };
 
 window.onload = function() {
+  const hideButton = /** @type {HTMLButtonElement} */ (document.getElementById(
+    "hidebutton"
+  ));
+
+  hideButton.addEventListener("click", e => {
+    console.log("test");
+    e.stopImmediatePropagation();
+    document.getElementById("messagebox").style.display = "none";
+    return false;
+  });
+
+  document.addEventListener("click", e => {
+    console.log(console.log("x: " + e.clientX + " y: " + e.clientY));
+    poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
+  });
+
   const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById(
     "gl"
   ));
@@ -70,11 +86,6 @@ function poke(x, y, color, texture) {
 }
 
 let drawColor = [255, 0, 0];
-
-document.addEventListener("mousedown", e => {
-  console.log(console.log("x: " + e.clientX + " y: " + e.clientY));
-  poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
-});
 
 document.addEventListener("keydown", e => {
   if (e.key === "r") {

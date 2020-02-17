@@ -6,10 +6,52 @@
         margin: 0;
         background: black;
       }
+
+      .message {
+        position: absolute;
+        top: 0px;
+        z-index: 1;
+        margin-left: 16px;
+        color: white;
+        font-family: sans-serif;
+        width: 800px;
+      }
+
+      .button {
+        background-color: #00000000;
+        color: white;
+        font-family: sans-serif;
+        font-size: 12pt;
+        padding: 4px 8px;
+        border: 2px solid white;
+      }
+
+      .button:hover {
+        background-color: #ffffff55;
+      }
     </style>
   </head>
   <body>
     <canvas id="gl"></canvas>
+    <div class="message" id="messagebox">
+      <h1>rock paper scissors cellular automata</h1>
+      <h2>controls</h2>
+      <p>click to make a hungry cell</p>
+      <p>use the r, g and b keys to change color</p>
+      <h2>what's going on</h2>
+      <p>a cell will try to eat a neighbor randomly</p>
+      <p>red eats blue, blue eats green and green eats red</p>
+      <p>
+        extending to an empty space will waste fuel, and the color becomes
+        darker
+      </p>
+      <p>
+        eating another cell doesn't lose fuel
+      </p>
+      <button class="button" id="hidebutton">
+        make this go away
+      </button>
+    </div>
   </body>
   <script src="bundle.js"></script>
 </html>
