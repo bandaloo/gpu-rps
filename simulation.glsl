@@ -21,7 +21,7 @@ vec3 get(int x, int y) {
 // change color
 vec3 munch(vec3 center, int x, int y) {
   vec3 neighbor = get(x, y);
-  const float minimum = 0.0625;
+  const float minimum = 0.0625; // equivalent to 1/16
   // if adjacent to a hostile neighbor or empty
   if (
     (neighbor.g > 0.0 && center.r > 0.0)
@@ -31,7 +31,8 @@ vec3 munch(vec3 center, int x, int y) {
     gl_FragColor = vec4(vec3(neighbor), 1.0);
   }
   else if (center.r < minimum && center.g < minimum && center.b < minimum) {
-    gl_FragColor = vec4(vec3(neighbor - sign(neighbor) * vec3(0.0125)), 1.0);
+    // reduction in fuel equivalent to -1/64
+    gl_FragColor = vec4(vec3(neighbor - sign(neighbor) * vec3(0.015625)), 1.0);
   } else {
     gl_FragColor = vec4(center, 1.0);
   }
@@ -39,6 +40,8 @@ vec3 munch(vec3 center, int x, int y) {
 }
 
 void main() {
+  // the scalar for the coordinate is to increase randomness
+  // (we get some weird patterns otherwise)
   float r = random(gl_FragCoord.xy * 1.234 + time);
   float i = r * 8.0;
   vec3 center = get(0, 0); // cache this so it so lookup doesn't happen every munch
