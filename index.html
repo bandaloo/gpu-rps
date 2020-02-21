@@ -30,6 +30,18 @@
       .button:hover {
         background-color: #ffffff55;
       }
+
+      #dot {
+        margin: 0px;
+        position: absolute;
+        background-color: #00000000;
+        float: left;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid #ff0000aa;
+        z-index: 2;
+      }
     </style>
   </head>
   <body>
@@ -52,6 +64,7 @@
         make this go away
       </button>
     </div>
+    <div id="dot"></div>
   </body>
   <script src="bundle.js"></script>
 </html>

@@ -63,6 +63,14 @@ window.onload = function() {
     return false;
   });
 
+  const dot = document.getElementById("dot");
+
+  document.addEventListener("mousemove", e => {
+    console.log("moved");
+    dot.style.left = e.pageX - 10 + "px";
+    dot.style.top = e.pageY - 10 + "px";
+  });
+
   document.addEventListener("mousedown", e => {
     pressed = true;
     paint(e.clientX, dimensions.height - e.clientY);
@@ -80,14 +88,18 @@ window.onload = function() {
     if (e.key === "r") {
       drawColor = [255, 0, 0];
       erase = false;
+      dot.style.border = "2px solid #ff0000aa";
     } else if (e.key === "g") {
       drawColor = [0, 255, 0];
       erase = false;
+      dot.style.border = "2px solid #00ff00aa";
     } else if (e.key === "b") {
       drawColor = [0, 0, 255];
       erase = false;
+      dot.style.border = "2px solid #0000ffaa";
     } else if (e.key === "e") {
       erase = true;
+      dot.style.border = "2px solid #ffffffaa";
     } else if (e.key === "c") {
       clearSection(0, 0, dimensions.width, dimensions.height, textureBack);
     }
