@@ -43,12 +43,12 @@ void main() {
   float i = r * 8.0;
   vec3 center = get(0, 0); // cache this so it so lookup doesn't happen every munch
   
-  if (i < 1.0) {munch(center, - 1, - 1); }
-  else if (i < 2.0) {munch(center, - 1, 0); }
-  else if (i < 3.0) {munch(center, - 1, 1); }
-  else if (i < 4.0) {munch(center, 0, - 1); }
-  else if (i < 5.0) {munch(center, 0, 1); }
-  else if (i < 6.0) {munch(center, 1, - 1); }
-  else if (i < 7.0) {munch(center, 1, 0); }
-  else if (i < 8.0) {munch(center, 1, 1); }
+  if (i < 1.0) { munch(center, - 1, - 1); }
+  else if (i < 2.0) { munch(center, - 1, 0); }
+  else if (i < 3.0) { munch(center, - 1, 1); }
+  else if (i < 4.0) { munch(center, 0, - 1); }
+  else if (i < 5.0) { munch(center, 0, 1); }
+  else if (i < 6.0) { munch(center, 1, - 1); }
+  else if (i < 7.0) { munch(center, 1, 0); }
+  else if (i < 8.0) { munch(center, 1, 1); }
 }
