@@ -27,6 +27,8 @@ let textureFront;
 /** @type {{width: number, height: number}} */
 let dimensions = { width: null, height: null };
 
+let pressed = false;
+
 window.onload = function() {
   const hideButton = /** @type {HTMLButtonElement} */ (document.getElementById(
     "hidebutton"
@@ -39,9 +41,18 @@ window.onload = function() {
     return false;
   });
 
-  document.addEventListener("click", e => {
-    console.log(console.log("x: " + e.clientX + " y: " + e.clientY));
+  document.addEventListener("mousedown", e => {
+    pressed = true;
     poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
+  });
+
+  document.addEventListener("mouseup", e => {
+    pressed = false;
+  });
+
+  document.addEventListener("mousemove", e => {
+    if (pressed)
+      poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
   });
 
   const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById(
