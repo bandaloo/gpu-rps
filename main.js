@@ -55,6 +55,18 @@ window.onload = function() {
       poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
   });
 
+  document.addEventListener("keydown", e => {
+    if (e.key === "r") {
+      drawColor = [255, 0, 0];
+    } else if (e.key === "g") {
+      drawColor = [0, 255, 0];
+    } else if (e.key === "b") {
+      drawColor = [0, 0, 255];
+    } else if (e.key === "c") {
+      clearBoard([0, 0, 0], textureBack);
+    }
+  });
+
   const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById(
     "gl"
   ));
@@ -96,19 +108,29 @@ function poke(x, y, color, texture) {
   );
 }
 
+/**
+ * @param {number[]} color
+ * @param {WebGLTexture} texture
+ */
+function clearBoard(color, texture) {
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+
+  // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texSubImage2D
+  gl.texSubImage2D(
+    gl.TEXTURE_2D,
+    0,
+    0,
+    0,
+    dimensions.width,
+    dimensions.height,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    // is supposed to be a typed array
+    new Uint8Array(dimensions.width * dimensions.height * 4)
+  );
+}
+
 let drawColor = [255, 0, 0];
-
-document.addEventListener("keydown", e => {
-  if (e.key === "r") {
-    drawColor = [255, 0, 0];
-  } else if (e.key === "g") {
-    drawColor = [0, 255, 0];
-  } else if (e.key === "b") {
-    drawColor = [0, 0, 255];
-  }
-});
-
-document.addEventListener;
 
 function makeBuffer() {
   // create a buffer object to store vertices
