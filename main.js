@@ -28,6 +28,7 @@ let textureFront;
 let dimensions = { width: null, height: null };
 
 let pressed = false;
+let erase = false;
 
 window.onload = function() {
   const hideButton = /** @type {HTMLButtonElement} */ (document.getElementById(
@@ -43,7 +44,7 @@ window.onload = function() {
 
   document.addEventListener("mousedown", e => {
     pressed = true;
-    poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
+    paint(e.clientX, dimensions.height - e.clientY);
   });
 
   document.addEventListener("mouseup", e => {
@@ -51,19 +52,24 @@ window.onload = function() {
   });
 
   document.addEventListener("mousemove", e => {
-    if (pressed)
-      poke(e.clientX, dimensions.height - e.clientY, drawColor, textureBack);
+    if (pressed) paint(e.clientX, dimensions.height - e.clientY);
   });
 
   document.addEventListener("keydown", e => {
     if (e.key === "r") {
       drawColor = [255, 0, 0];
+      erase = false;
     } else if (e.key === "g") {
       drawColor = [0, 255, 0];
+      erase = false;
     } else if (e.key === "b") {
       drawColor = [0, 0, 255];
+      erase = false;
+    } else if (e.key === "e") {
+      erase = true;
+      console.log(erase);
     } else if (e.key === "c") {
-      clearBoard([0, 0, 0], textureBack);
+      clearSection(0, 0, dimensions.width, dimensions.height, textureBack);
     }
   });
 
@@ -82,6 +88,20 @@ window.onload = function() {
   makeShaders();
   makeTextures();
 };
+
+/**
+ * draw color on the board or erase
+ * @param {number} x
+ * @param {number} y
+ */
+function paint(x, y) {
+  console.log(erase);
+  if (!erase) {
+    poke(x, y, drawColor, textureBack);
+  } else {
+    clearSection(x - 32, y - 32, 64, 64, textureBack);
+  }
+}
 
 /**
  * @param {number} x
@@ -109,24 +129,27 @@ function poke(x, y, color, texture) {
 }
 
 /**
- * @param {number[]} color
+ * @param {number} x
+ * @param {number} y
+ * @param {number} width
+ * @param {number} height
  * @param {WebGLTexture} texture
  */
-function clearBoard(color, texture) {
+function clearSection(x, y, width, height, texture) {
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texSubImage2D
   gl.texSubImage2D(
     gl.TEXTURE_2D,
     0,
-    0,
-    0,
-    dimensions.width,
-    dimensions.height,
+    x,
+    y,
+    width,
+    height,
     gl.RGBA,
     gl.UNSIGNED_BYTE,
-    // is supposed to be a typed array
-    new Uint8Array(dimensions.width * dimensions.height * 4)
+    // empty array of all zero of appropriate size
+    new Uint8Array(width * height * 4)
   );
 }
 
