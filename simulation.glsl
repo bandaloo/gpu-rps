@@ -21,6 +21,7 @@ vec3 get(int x, int y) {
 // change color
 vec3 munch(vec3 center, int x, int y) {
   vec3 neighbor = get(x, y);
+  const float minimum = 0.0625;
   // if adjacent to a hostile neighbor or empty
   if (
     (neighbor.g > 0.0 && center.r > 0.0)
@@ -29,7 +30,7 @@ vec3 munch(vec3 center, int x, int y) {
   ) {
     gl_FragColor = vec4(vec3(neighbor), 1.0);
   }
-  else if (center == vec3(0.0)) {
+  else if (center.r < minimum && center.g < minimum && center.b < minimum) {
     gl_FragColor = vec4(vec3(neighbor - sign(neighbor) * vec3(0.0125)), 1.0);
   } else {
     gl_FragColor = vec4(center, 1.0);
