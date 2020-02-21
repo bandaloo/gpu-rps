@@ -30,13 +30,34 @@ let dimensions = { width: null, height: null };
 let pressed = false;
 let erase = false;
 
+/**
+ * helper function for clamping a number
+ * @param {number} n
+ * @param {number} lo
+ * @param {number} hi
+ * @returns {number}
+ */
+function clamp(n, lo, hi) {
+  return Math.min(hi, Math.max(n, lo));
+}
+
+/**
+ * helper function to clamp coordinates to dimensions
+ * @param {number} x
+ * @param {number} y
+ */
+function clampToDimensions(x, y) {
+  x = clamp(x, 0, dimensions.width - 1);
+  y = clamp(y, 0, dimensions.height - 1);
+  return { x: x, y: y };
+}
+
 window.onload = function() {
   const hideButton = /** @type {HTMLButtonElement} */ (document.getElementById(
     "hidebutton"
   ));
 
   hideButton.addEventListener("click", e => {
-    console.log("test");
     e.stopImmediatePropagation();
     document.getElementById("messagebox").style.display = "none";
     return false;
@@ -67,7 +88,6 @@ window.onload = function() {
       erase = false;
     } else if (e.key === "e") {
       erase = true;
-      console.log(erase);
     } else if (e.key === "c") {
       clearSection(0, 0, dimensions.width, dimensions.height, textureBack);
     }
@@ -95,7 +115,6 @@ window.onload = function() {
  * @param {number} y
  */
 function paint(x, y) {
-  console.log(erase);
   if (!erase) {
     poke(x, y, drawColor, textureBack);
   } else {
@@ -110,6 +129,9 @@ function paint(x, y) {
  * @param {WebGLTexture} texture
  */
 function poke(x, y, color, texture) {
+  // this prevents the webgl warnings
+  ({ x, y } = clampToDimensions(x, y));
+
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texSubImage2D
@@ -129,6 +151,7 @@ function poke(x, y, color, texture) {
 }
 
 /**
+ * clears a rectangle
  * @param {number} x
  * @param {number} y
  * @param {number} width
@@ -136,6 +159,12 @@ function poke(x, y, color, texture) {
  * @param {WebGLTexture} texture
  */
 function clearSection(x, y, width, height, texture) {
+  // this prevents the webgl warnings
+  ({ x, y } = clampToDimensions(x, y));
+
+  if (x + width > dimensions.width) width = dimensions.width - x;
+  if (y + height > dimensions.height) x = dimensions.height - y;
+
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texSubImage2D
@@ -182,6 +211,7 @@ function makeShaders() {
   const drawFragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(drawFragmentShader, fragmentSource);
   gl.compileShader(drawFragmentShader);
+  // reports problem if there was issue with compiling shader
   console.log(gl.getShaderInfoLog(drawFragmentShader));
 
   // create render program that draws to screen
@@ -208,6 +238,7 @@ function makeShaders() {
   const simulationFragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(simulationFragmentShader, simulationSource);
   gl.compileShader(simulationFragmentShader);
+  // reports problem if there was issue with compiling shader
   console.log(gl.getShaderInfoLog(simulationFragmentShader));
 
   // create simulation program
@@ -325,10 +356,10 @@ function render() {
   // set our viewport to be the size of our canvas
   // so that it will fill it entirely
   gl.viewport(0, 0, dimensions.width, dimensions.height);
-  // select the texture we would like to draw to the screen.
-  // note that webgl does not allow you to write to / read from the
-  // same texture in a single render pass. Because of the swap, we're
-  // displaying the state of our simulation ****before**** this render pass (frame)
+  // select the texture we would like to draw to the screen. note that webgl
+  // does not allow you to write to read from the same texture in a single
+  // render pass. Because of the swap, we're displaying the state of our
+  // simulation ****before**** this render pass (frame)
   gl.bindTexture(gl.TEXTURE_2D, textureFront);
   // use our drawing (copy) shader
   gl.useProgram(drawProgram);
